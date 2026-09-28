@@ -19,29 +19,60 @@ public sealed class FishingGameController : MonoBehaviour
     private float fishVelocity;
     private float progress;
     private float escape;
-    private string message = "WASD / Arrow keys to walk  •  Face the water and press F to fish";
+    private string message = "이동: WASD 또는 방향키";
     private string result = "";
+    private bool initialized;
+    private PixelMapBuilder map;
 
     private void OnEnable()
     {
-        if (!Application.isPlaying) BuildEditorPreview();
+        if (Application.isPlaying) { initialized = false; return; }
+        var oldPreview = transform.Find("Tilemap Scene Preview");
+        if (oldPreview != null) DestroyImmediate(oldPreview.gameObject);
+        foreach (var oldPlayer in Object.FindObjectsByType<PixelCharacter>(FindObjectsSortMode.None))
+            if (oldPlayer.transform.parent == null) DestroyImmediate(oldPlayer.gameObject);
+        var lakePreview = transform.Find("Lake Preview");
+        if (lakePreview != null) DestroyImmediate(lakePreview.gameObject);
+        var preview = new GameObject("Lake Preview");
+        preview.transform.SetParent(transform, false);
+        var previewBuilder = preview.AddComponent<PixelMapBuilder>();
+        previewBuilder.Build();
+        var previewPlayer = new GameObject("Player Preview");
+        previewPlayer.transform.SetParent(preview.transform, false);
+        previewPlayer.transform.position = previewBuilder.PlayerStart;
+        var previewCharacter = previewPlayer.AddComponent<PixelCharacter>();
+        previewCharacter.Setup();
     }
 
     private void Awake()
     {
-        if (!Application.isPlaying) return;
-        var preview = transform.Find("Scene Preview");
-        if (preview != null) Destroy(preview.gameObject);
+        Initialize();
+    }
+
+    private void Start()
+    {
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        if (initialized || !Application.isPlaying) return;
+        // Clear the temporary Scene-view objects created by the earlier prototype.
+        for (int i = transform.childCount - 1; i >= 0; i--) Destroy(transform.GetChild(i).gameObject);
         BuildWorld();
         fishTextures = new[] {
             Resources.Load<Texture2D>("Sprites/Fish/atlantic_salmon"),
             Resources.Load<Texture2D>("Sprites/Fish/common_carp"),
             Resources.Load<Texture2D>("Sprites/Fish/northern_pike")
         };
+        initialized = true;
     }
 
     private void BuildWorld()
     {
+        // Clean up only runtime objects created by this prototype before making a fresh test session.
+        foreach (var oldPlayer in Object.FindObjectsByType<PixelCharacter>(FindObjectsSortMode.None)) Destroy(oldPlayer.gameObject);
+        foreach (var oldMap in GetComponents<PixelMapBuilder>()) Destroy(oldMap);
         gameCamera = Camera.main;
         if (gameCamera == null)
         {
@@ -50,39 +81,20 @@ public sealed class FishingGameController : MonoBehaviour
             cameraObject.tag = "MainCamera";
         }
         gameCamera.orthographic = true;
-        gameCamera.orthographicSize = 4.5f;
+        gameCamera.orthographicSize = 3.6f;
         gameCamera.transform.position = new Vector3(0, 0, -10);
-        gameCamera.backgroundColor = new Color(.16f, .52f, .68f);
+        gameCamera.backgroundColor = new Color(.35f, .60f, .24f);
 
-        CreateRect("Grass Shore", new Vector2(-3.8f, 0), new Vector2(4.4f, 9), new Color(.31f, .67f, .27f), -3);
-        CreateRect("Water", new Vector2(2.2f, 0), new Vector2(7.2f, 9), new Color(.12f, .50f, .69f), -4);
-        for (var y = -4f; y <= 4f; y += .65f)
-            CreateRect("Water Ripple", new Vector2(2.2f + Mathf.Sin(y * 8f) * .4f, y), new Vector2(4.8f, .025f), new Color(.42f, .80f, .86f, .55f), -2);
-        CreateRect("Dock", new Vector2(-.1f, -1.1f), new Vector2(2.5f, 1.0f), new Color(.43f, .25f, .12f), -1);
-        CreateRect("Fishing Zone", new Vector2(1.35f, -1.1f), new Vector2(.16f, 1.15f), new Color(1f, .86f, .36f, .7f), 0);
+        map = gameObject.AddComponent<PixelMapBuilder>();
+        map.Build();
 
         var player = new GameObject("Player (Pixel Crawler)");
-        player.transform.position = new Vector3(-.75f, -1.1f, 0);
+        player.transform.position = map.PlayerStart;
         character = player.AddComponent<PixelCharacter>();
         character.Setup();
-    }
-
-    // A lightweight real Scene-view preview; the complete interactive objects are made when Play is pressed.
-    private void BuildEditorPreview()
-    {
-        if (transform.Find("Scene Preview") != null) return;
-        var root = new GameObject("Scene Preview").transform;
-        root.SetParent(transform);
-        CreatePreviewRect(root, "Grass Shore", new Vector2(-3.8f, 0), new Vector2(4.4f, 9), new Color(.31f, .67f, .27f), -3);
-        CreatePreviewRect(root, "Water", new Vector2(2.2f, 0), new Vector2(7.2f, 9), new Color(.12f, .50f, .69f), -4);
-        CreatePreviewRect(root, "Dock", new Vector2(-.1f, -1.1f), new Vector2(2.5f, 1.0f), new Color(.43f, .25f, .12f), -1);
-        CreatePreviewRect(root, "Fishing Zone", new Vector2(1.35f, -1.1f), new Vector2(.16f, 1.15f), new Color(1f, .86f, .36f, .7f), 0);
-    }
-
-    private static void CreatePreviewRect(Transform parent, string objectName, Vector2 position, Vector2 size, Color color, int sortingOrder)
-    {
-        var go = CreateRect(objectName, position, size, color, sortingOrder);
-        go.transform.SetParent(parent, true);
+        var follow = gameCamera.gameObject.GetComponent<CameraFollow2D>();
+        if (follow == null) follow = gameCamera.gameObject.AddComponent<CameraFollow2D>();
+        follow.Target = player.transform;
     }
 
     private static GameObject CreateRect(string objectName, Vector2 position, Vector2 size, Color color, int sortingOrder)
@@ -100,26 +112,33 @@ public sealed class FishingGameController : MonoBehaviour
 
     private void Update()
     {
+        if (!initialized)
+        {
+            Initialize();
+            if (!initialized) return;
+        }
         if (state == State.Explore)
         {
-            character.Move();
-            if (Vector2.Distance(character.transform.position, new Vector2(-.75f, -1.1f)) < 1.5f && Input.GetKeyDown(KeyCode.F)) Cast();
+            if (character != null) character.Move();
+            bool nearFishingSpot = character != null && Vector2.Distance(character.transform.position, map.FishingSpot) < 1.4f;
+            message = nearFishingSpot ? "물가  •  F 키를 눌러 낚시하기" : "이동: WASD 또는 방향키";
+            if (nearFishingSpot && Input.GetKeyDown(KeyCode.F)) Cast();
         }
         else if (state == State.Waiting)
         {
-            if (Input.GetKeyDown(KeyCode.Escape)) ResetFishing("Fishing cancelled.");
+            if (Input.GetKeyDown(KeyCode.Escape)) ResetFishing("낚시를 취소했습니다.");
             waitTimer -= Time.deltaTime;
             if (waitTimer <= 0) Bite();
         }
         else if (state == State.Reeling) Reel();
-        else if (state == State.Result && Input.GetKeyDown(KeyCode.F)) ResetFishing("Face the water and press F to fish");
+        else if (state == State.Result && Input.GetKeyDown(KeyCode.F)) ResetFishing("물가에서 F 키를 눌러 다시 낚시하세요.");
     }
 
     private void Cast()
     {
         state = State.Waiting; character.SetFishing(true);
-        message = "Casting… wait for a bite  (ESC to cancel)";
-        bobber = CreateRect("Bobber", new Vector2(2.1f, -1.1f), new Vector2(.14f, .14f), new Color(1f, .28f, .2f), 2);
+        message = "낚싯줄을 던졌습니다… 입질을 기다리는 중  (ESC: 취소)";
+        bobber = CreateRect("Bobber", map.BobberSpot, new Vector2(.22f, .22f), new Color(1f, .28f, .2f), 4);
         waitTimer = Random.Range(2f, 6f);
     }
 
@@ -127,7 +146,7 @@ public sealed class FishingGameController : MonoBehaviour
     {
         state = State.Reeling; currentFish = fishTextures[Random.Range(0, fishTextures.Length)];
         fishPosition = Random.Range(.15f, .85f); reelPosition = .4f; reelVelocity = 0; fishVelocity = Random.Range(-.15f, .15f);
-        progress = escape = 0; message = "BITE! Hold left mouse / SPACE to pull the white zone right. Keep fish inside it!";
+        progress = escape = 0; message = "입질! 마우스 왼쪽 또는 스페이스를 눌러 흰 영역을 움직이세요.";
         if (bobber != null) bobber.GetComponent<SpriteRenderer>().color = Color.yellow;
     }
 
@@ -146,14 +165,14 @@ public sealed class FishingGameController : MonoBehaviour
         bool aligned = fishPosition >= reelPosition && fishPosition <= reelPosition + zoneSize;
         progress = Mathf.Clamp01(progress + (aligned ? .27f : -.12f) * Time.deltaTime);
         escape = Mathf.Clamp01(escape + (aligned ? -.14f : .18f) * Time.deltaTime);
-        if (progress >= 1) ResetFishing("CAUGHT! Press F to cast again.");
-        else if (escape >= 1) ResetFishing("The fish escaped. Press F to try again.");
-        else if (Input.GetKeyDown(KeyCode.Escape)) ResetFishing("Fishing cancelled.");
+        if (progress >= 1) ResetFishing("물고기를 잡았습니다! F 키로 다시 낚시할 수 있습니다.");
+        else if (escape >= 1) ResetFishing("물고기가 도망갔습니다. F 키로 다시 시도하세요.");
+        else if (Input.GetKeyDown(KeyCode.Escape)) ResetFishing("낚시를 취소했습니다.");
     }
 
     private void ResetFishing(string newMessage)
     {
-        if (state == State.Reeling && progress >= 1) result = currentFish == fishTextures[2] ? "Northern Pike" : currentFish == fishTextures[1] ? "Common Carp" : "Atlantic Salmon";
+        if (state == State.Reeling && progress >= 1) result = currentFish == fishTextures[2] ? "노던 파이크" : currentFish == fishTextures[1] ? "잉어" : "대서양 연어";
         state = State.Result; message = newMessage; character.SetFishing(false);
         if (bobber != null) Destroy(bobber);
     }
@@ -161,15 +180,15 @@ public sealed class FishingGameController : MonoBehaviour
     private void OnGUI()
     {
         var style = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = 16, normal = { textColor = Color.white } };
-        GUI.Box(new Rect(Screen.width / 2 - 310, 20, 620, 38), message); GUI.Label(new Rect(Screen.width / 2 - 300, 25, 600, 28), message, style);
-        if (state != State.Reeling) { if (!string.IsNullOrEmpty(result)) GUI.Label(new Rect(Screen.width/2-180, 70, 360, 35), "Caught: " + result, style); return; }
+        GUI.Box(new Rect(Screen.width / 2 - 310, 20, 620, 38), ""); GUI.Label(new Rect(Screen.width / 2 - 300, 25, 600, 28), message, style);
+        if (state != State.Reeling) { if (!string.IsNullOrEmpty(result)) GUI.Label(new Rect(Screen.width/2-180, 70, 360, 35), "획득: " + result, style); return; }
         var track = new Rect(Screen.width / 2 - 350, Screen.height - 150, 700, 38);
         GUI.Box(track, "");
         float zoneSize = currentFish == fishTextures[2] ? .15f : currentFish == fishTextures[1] ? .20f : .26f;
         GUI.color = Color.white; GUI.Box(new Rect(track.x + reelPosition * track.width, track.y + 3, zoneSize * track.width, track.height - 6), "");
         GUI.color = Color.white;
         if (currentFish != null) GUI.DrawTexture(new Rect(track.x + fishPosition * track.width - 16, track.y - 10, 32, 32), currentFish, ScaleMode.ScaleToFit, true);
-        GUI.Box(new Rect(track.x, track.y + 55, track.width * progress, 16), ""); GUI.Label(new Rect(track.x, track.y + 75, 200, 24), "CATCH " + Mathf.RoundToInt(progress * 100) + "%");
-        GUI.Box(new Rect(track.x + track.width - track.width * escape, track.y + 55, track.width * escape, 16), ""); GUI.Label(new Rect(track.x + 500, track.y + 75, 200, 24), "ESCAPE " + Mathf.RoundToInt(escape * 100) + "%", style);
+        GUI.Box(new Rect(track.x, track.y + 55, track.width * progress, 16), ""); GUI.Label(new Rect(track.x, track.y + 75, 200, 24), "포획 " + Mathf.RoundToInt(progress * 100) + "%");
+        GUI.Box(new Rect(track.x + track.width - track.width * escape, track.y + 55, track.width * escape, 16), ""); GUI.Label(new Rect(track.x + 500, track.y + 75, 200, 24), "도주 " + Mathf.RoundToInt(escape * 100) + "%", style);
     }
 }

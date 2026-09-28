@@ -15,6 +15,8 @@ public sealed class PixelCharacter : MonoBehaviour
     {
         spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = 3;
+        var collider = gameObject.AddComponent<CircleCollider2D>();
+        collider.radius = .16f;
         idle = Resources.Load<Texture2D>("Sprites/Player/IdleDown");
         walk = Resources.Load<Texture2D>("Sprites/Player/WalkDown");
         fishing = Resources.Load<Texture2D>("Sprites/Player/FishingDown");
@@ -25,7 +27,13 @@ public sealed class PixelCharacter : MonoBehaviour
     {
         Vector2 movement = new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         movement = movement.normalized;
-        transform.position += (Vector3)(movement * speed * Time.deltaTime);
+        Vector2 nextPosition = (Vector2)transform.position + movement * speed * Time.deltaTime;
+        Collider2D[] collisionBuffer = Physics2D.OverlapCircleAll(nextPosition, .14f);
+        int hitCount = collisionBuffer.Length;
+        bool blocked = false;
+        for (int i = 0; i < hitCount; i++)
+            if (collisionBuffer[i] != null && collisionBuffer[i].gameObject != gameObject) { blocked = true; break; }
+        if (!blocked) transform.position = nextPosition;
         frameTime += Time.deltaTime;
         SetFrame(movement.sqrMagnitude > .01f ? walk : idle, Mathf.FloorToInt(frameTime * (movement.sqrMagnitude > .01f ? 8f : 4f)));
         if (movement.x != 0) spriteRenderer.flipX = movement.x < 0;
@@ -35,7 +43,7 @@ public sealed class PixelCharacter : MonoBehaviour
 
     private void Update()
     {
-        if (!isFishing) return;
+        if (!isFishing || spriteRenderer == null) return;
         frameTime += Time.deltaTime;
         SetFrame(fishing, Mathf.FloorToInt(frameTime * 7f));
     }
@@ -45,6 +53,6 @@ public sealed class PixelCharacter : MonoBehaviour
         if (source == null) return;
         int count = source.width / 64;
         frame %= count;
-        spriteRenderer.sprite = Sprite.Create(source, new Rect(frame * 64, 0, 64, 64), new Vector2(.5f, .1f), 48f);
+        spriteRenderer.sprite = Sprite.Create(source, new Rect(frame * 64, 0, 64, 64), new Vector2(.5f, .1f), 24f);
     }
 }

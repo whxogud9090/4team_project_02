@@ -1,0 +1,975 @@
+fileFormatVersion: 2
+guid: 12534e7cbe3ced741a91b8ce27c06cc7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6253451528355253099
+    second: FieldsOfAdventureTileset_0
+  - first:
+      213: -4927798982986227505
+    second: FieldsOfAdventureTileset_1
+  - first:
+      213: -139157455857805814
+    second: FieldsOfAdventureTileset_2
+  - first:
+      213: 4901732979420504932
+    second: FieldsOfAdventureTileset_3
+  - first:
+      213: -1753810390049003858
+    second: FieldsOfAdventureTileset_4
+  - first:
+      213: 6924993730285252802
+    second: FieldsOfAdventureTileset_5
+  - first:
+      213: -989956844852755235
+    second: FieldsOfAdventureTileset_6
+  - first:
+      213: -4535386671062835540
+    second: FieldsOfAdventureTileset_7
+  - first:
+      213: -2407064795849148773
+    second: FieldsOfAdventureTileset_8
+  - first:
+      213: -1866604069898364172
+    second: FieldsOfAdventureTileset_9
+  - first:
+      213: 4310545676323358942
+    second: FieldsOfAdventureTileset_10
+  - first:
+      213: 2173323536099157470
+    second: FieldsOfAdventureTileset_11
+  - first:
+      213: -2190831684128637281
+    second: FieldsOfAdventureTileset_12
+  - first:
+      213: -4212798594464966464
+    second: FieldsOfAdventureTileset_13
+  - first:
+      213: -2694181968149467940
+    second: FieldsOfAdventureTileset_14
+  - first:
+      213: 7663628134850042919
+    second: FieldsOfAdventureTileset_15
+  - first:
+      213: -6682062355804319779
+    second: FieldsOfAdventureTileset_16
+  - first:
+      213: -7947267186044906311
+    second: FieldsOfAdventureTileset_17
+  - first:
+      213: -4730223650747048416
+    second: FieldsOfAdventureTileset_18
+  - first:
+      213: 7314892251519361051
+    second: FieldsOfAdventureTileset_19
+  - first:
+      213: 2149253021068864992
+    second: FieldsOfAdventureTileset_20
+  - first:
+      213: -4480804879978070206
+    second: FieldsOfAdventureTileset_21
+  - first:
+      213: -1547050535002342091
+    second: FieldsOfAdventureTileset_22
+  - first:
+      213: -2538083147071484915
+    second: FieldsOfAdventureTileset_23
+  - first:
+      213: -1705522339917572992
+    second: FieldsOfAdventureTileset_24
+  - first:
+      213: 4084736827690647718
+    second: FieldsOfAdventureTileset_25
+  - first:
+      213: -5612457009862617618
+    second: FieldsOfAdventureTileset_26
+  - first:
+      213: 6820592787211939686
+    second: FieldsOfAdventureTileset_27
+  - first:
+      213: 6956201181510548573
+    second: FieldsOfAdventureTileset_28
+  - first:
+      213: -3500230615792542559
+    second: FieldsOfAdventureTileset_29
+  - first:
+      213: 8694239323084891534
+    second: FieldsOfAdventureTileset_30
+  - first:
+      213: 8843309425874427291
+    second: FieldsOfAdventureTileset_31
+  - first:
+      213: -752515274203042526
+    second: FieldsOfAdventureTileset_32
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 559
+        width: 193
+        height: 193
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6b0db76809b8c650800000000000000
+      internalID: 6253451528355253099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_1
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 722
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc0239efee0fc9bb0800000000000000
+      internalID: -4927798982986227505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_2
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 725
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a069fbbf70d911ef0800000000000000
+      internalID: -139157455857805814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_3
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 687
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4632d2e9c24760440800000000000000
+      internalID: 4901732979420504932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_4
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 641
+        width: 34
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea66db90eb639a7e0800000000000000
+      internalID: -1753810390049003858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_5
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 607
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c0b5758b158a1060800000000000000
+      internalID: 6924993730285252802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_6
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 607
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd4c59f9e77f242f0800000000000000
+      internalID: -989956844852755235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_7
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 543
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cae12482ad11f01c0800000000000000
+      internalID: -4535386671062835540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_8
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 575
+        width: 32
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9630144253689ed0800000000000000
+      internalID: -2407064795849148773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 463
+        width: 129
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fad865fc7d7816e0800000000000000
+      internalID: -1866604069898364172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_10
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 527
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed88951547222db30800000000000000
+      internalID: 4310545676323358942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_11
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 527
+        width: 32
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed5af27cd32392e10800000000000000
+      internalID: 2173323536099157470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_12
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 508
+        width: 33
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9e77d8d03a9891e0800000000000000
+      internalID: -2190831684128637281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_13
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 508
+        width: 16
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c896aaaff12985c0800000000000000
+      internalID: -4212798594464966464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 351
+        width: 49
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdc203c36c75c9ad0800000000000000
+      internalID: -2694181968149467940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_15
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 431
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72c1d6c5f2daa5a60800000000000000
+      internalID: 7663628134850042919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_16
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 431
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ddf0643c0bb8443a0800000000000000
+      internalID: -6682062355804319779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_17
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 431
+        width: 82
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b4dca8c992a5b190800000000000000
+      internalID: -7947267186044906311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_18
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 351
+        width: 50
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02e1215c6aeda5eb0800000000000000
+      internalID: -4730223650747048416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_19
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 367
+        width: 18
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b10a11e2fb7b38560800000000000000
+      internalID: 7314892251519361051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_20
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 367
+        width: 18
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0edae354c3ea3dd10800000000000000
+      internalID: 2149253021068864992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_21
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 340
+        width: 79
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24ff115b3bbf0d1c0800000000000000
+      internalID: -4480804879978070206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_22
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 239
+        width: 49
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53d7b9b2cb5c78ae0800000000000000
+      internalID: -1547050535002342091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_23
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 239
+        width: 50
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0c066833dae6ccd0800000000000000
+      internalID: -2538083147071484915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_24
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 239
+        width: 50
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08458b4d774c458e0800000000000000
+      internalID: -1705522339917572992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_25
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 271
+        width: 65
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a0057fb086efa830800000000000000
+      internalID: 4084736827690647718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_26
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 127
+        width: 129
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee5dcf9e51c8c12b0800000000000000
+      internalID: -5612457009862617618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_27
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 175
+        width: 18
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66feb5fb00d97ae50800000000000000
+      internalID: 6820592787211939686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_28
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 159
+        width: 60
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5cb61a7e14698060800000000000000
+      internalID: 6956201181510548573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_29
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 127
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ac1db9ccceac6fc0800000000000000
+      internalID: -3500230615792542559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2
+        width: 145
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8525bca99428a870800000000000000
+      internalID: 8694239323084891534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_31
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 15
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9ddb18a11fb9ba70800000000000000
+      internalID: 8843309425874427291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FieldsOfAdventureTileset_32
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 17
+        width: 50
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22d621958578e85f0800000000000000
+      internalID: -752515274203042526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      FieldsOfAdventureTileset_0: 6253451528355253099
+      FieldsOfAdventureTileset_1: -4927798982986227505
+      FieldsOfAdventureTileset_10: 4310545676323358942
+      FieldsOfAdventureTileset_11: 2173323536099157470
+      FieldsOfAdventureTileset_12: -2190831684128637281
+      FieldsOfAdventureTileset_13: -4212798594464966464
+      FieldsOfAdventureTileset_14: -2694181968149467940
+      FieldsOfAdventureTileset_15: 7663628134850042919
+      FieldsOfAdventureTileset_16: -6682062355804319779
+      FieldsOfAdventureTileset_17: -7947267186044906311
+      FieldsOfAdventureTileset_18: -4730223650747048416
+      FieldsOfAdventureTileset_19: 7314892251519361051
+      FieldsOfAdventureTileset_2: -139157455857805814
+      FieldsOfAdventureTileset_20: 2149253021068864992
+      FieldsOfAdventureTileset_21: -4480804879978070206
+      FieldsOfAdventureTileset_22: -1547050535002342091
+      FieldsOfAdventureTileset_23: -2538083147071484915
+      FieldsOfAdventureTileset_24: -1705522339917572992
+      FieldsOfAdventureTileset_25: 4084736827690647718
+      FieldsOfAdventureTileset_26: -5612457009862617618
+      FieldsOfAdventureTileset_27: 6820592787211939686
+      FieldsOfAdventureTileset_28: 6956201181510548573
+      FieldsOfAdventureTileset_29: -3500230615792542559
+      FieldsOfAdventureTileset_3: 4901732979420504932
+      FieldsOfAdventureTileset_30: 8694239323084891534
+      FieldsOfAdventureTileset_31: 8843309425874427291
+      FieldsOfAdventureTileset_32: -752515274203042526
+      FieldsOfAdventureTileset_4: -1753810390049003858
+      FieldsOfAdventureTileset_5: 6924993730285252802
+      FieldsOfAdventureTileset_6: -989956844852755235
+      FieldsOfAdventureTileset_7: -4535386671062835540
+      FieldsOfAdventureTileset_8: -2407064795849148773
+      FieldsOfAdventureTileset_9: -1866604069898364172
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
