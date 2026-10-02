@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>Playable fishing prototype: move, face the water, cast, wait for a bite, then keep the fish inside the reel zone.</summary>
-[ExecuteAlways]
 public sealed class FishingGameController : MonoBehaviour
 {
     private enum State { Explore, Waiting, Reeling, Result }
@@ -23,26 +22,6 @@ public sealed class FishingGameController : MonoBehaviour
     private string result = "";
     private bool initialized;
     private PixelMapBuilder map;
-
-    private void OnEnable()
-    {
-        if (Application.isPlaying) { initialized = false; return; }
-        var oldPreview = transform.Find("Tilemap Scene Preview");
-        if (oldPreview != null) DestroyImmediate(oldPreview.gameObject);
-        foreach (var oldPlayer in Object.FindObjectsByType<PixelCharacter>(FindObjectsSortMode.None))
-            if (oldPlayer.transform.parent == null) DestroyImmediate(oldPlayer.gameObject);
-        var lakePreview = transform.Find("Lake Preview");
-        if (lakePreview != null) DestroyImmediate(lakePreview.gameObject);
-        var preview = new GameObject("Lake Preview");
-        preview.transform.SetParent(transform, false);
-        var previewBuilder = preview.AddComponent<PixelMapBuilder>();
-        previewBuilder.Build();
-        var previewPlayer = new GameObject("Player Preview");
-        previewPlayer.transform.SetParent(preview.transform, false);
-        previewPlayer.transform.position = previewBuilder.PlayerStart;
-        var previewCharacter = previewPlayer.AddComponent<PixelCharacter>();
-        previewCharacter.Setup();
-    }
 
     private void Awake()
     {

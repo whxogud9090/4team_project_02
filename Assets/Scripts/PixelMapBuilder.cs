@@ -1,11 +1,24 @@
 using UnityEngine;
 
 /// <summary>Creates one connected fishing lake from the Pixel Crawler Water_tiles source.</summary>
+[ExecuteAlways]
 public sealed class PixelMapBuilder : MonoBehaviour
 {
     public Vector2 PlayerStart { get; private set; } = new(0f, 4.2f);
     public Vector2 FishingSpot { get; private set; } = new(0f, 3.15f);
     public Vector2 BobberSpot { get; private set; } = new(0f, -.8f);
+
+    private void OnEnable()
+    {
+        // Keep the new art visible in the Scene view without rebuilding or deleting
+        // any of the existing fishing preview objects.
+        if (!Application.isPlaying) CreateDecorations();
+    }
+
+    public void EnsureDecorations()
+    {
+        CreateDecorations();
+    }
 
     public void Build()
     {
@@ -23,6 +36,65 @@ public sealed class PixelMapBuilder : MonoBehaviour
         renderer.sortingOrder = -2;
         var collider = lake.AddComponent<BoxCollider2D>();
         collider.size = new Vector2(13.5f, 9.5f);
+
+        CreateDecorations();
+    }
+
+    private void CreateDecorations()
+    {
+        if (transform.Find("Art Decorations") != null) return;
+
+        var treeTexture = Resources.Load<Texture2D>("Sprites/Environment/Tree1");
+        var grassTexture = Resources.Load<Texture2D>("Sprites/Environment/grass1");
+        if (treeTexture == null || grassTexture == null) return;
+
+        treeTexture.filterMode = FilterMode.Point;
+        grassTexture.filterMode = FilterMode.Point;
+
+        var root = new GameObject("Art Decorations");
+        root.transform.SetParent(transform, false);
+
+        Vector2[] treePositions =
+        {
+            new(-5.8f, 5.2f), new(5.9f, 5.5f), new(-8.2f, 1.2f), new(8.3f, 1.5f)
+        };
+        foreach (var position in treePositions)
+            CreateDecoration(root.transform, "Tree", treeTexture, position, 32f, 2, true);
+
+        Vector2[] grassPositions =
+        {
+            new(-4.5f, 4.1f), new(-2.8f, 5.6f), new(2.9f, 4.5f), new(4.7f, 6.0f),
+            new(-7.3f, 3.8f), new(7.1f, 3.9f), new(-9.0f, -2.8f), new(9.1f, -3.2f)
+        };
+        foreach (var position in grassPositions)
+            CreateDecoration(root.transform, "Grass", grassTexture, position, 32f, 0, false);
+    }
+
+    private static void CreateDecoration(
+        Transform parent,
+        string objectName,
+        Texture2D texture,
+        Vector2 position,
+        float pixelsPerUnit,
+        int sortingOrder,
+        bool blocksPlayer)
+    {
+        var decoration = new GameObject(objectName);
+        decoration.transform.SetParent(parent, false);
+        decoration.transform.position = position;
+
+        var renderer = decoration.AddComponent<SpriteRenderer>();
+        renderer.sprite = Sprite.Create(
+            texture,
+            new Rect(0, 0, texture.width, texture.height),
+            blocksPlayer ? new Vector2(.5f, 0f) : new Vector2(.5f, .5f),
+            pixelsPerUnit);
+        renderer.sortingOrder = sortingOrder;
+
+        if (!blocksPlayer) return;
+        var collider = decoration.AddComponent<BoxCollider2D>();
+        collider.size = new Vector2(.55f, .42f);
+        collider.offset = new Vector2(0f, .2f);
     }
 
     private void CreateGround()
