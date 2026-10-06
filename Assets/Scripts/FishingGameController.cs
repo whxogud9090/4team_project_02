@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>Playable fishing prototype: move, face the water, cast, wait for a bite, then keep the fish inside the reel zone.</summary>
 public sealed class FishingGameController : MonoBehaviour
 {
-    private enum State { Explore, Waiting, Reeling, Result }
+    private enum State { Explore, Waiting, Reeling }
     private State state;
     private PixelCharacter character;
     private Camera gameCamera;
@@ -18,10 +18,12 @@ public sealed class FishingGameController : MonoBehaviour
     private float fishVelocity;
     private float progress;
     private float escape;
+    private float resultTimer;
     private string message = "이동: WASD 또는 방향키";
     private string result = "";
     private bool initialized;
     private PixelMapBuilder map;
+    private FishingShopSystem shopSystem;
 
     private void Awake()
     {
@@ -71,6 +73,13 @@ public sealed class FishingGameController : MonoBehaviour
         player.transform.position = map.PlayerStart;
         character = player.AddComponent<PixelCharacter>();
         character.Setup();
+        var wallet = player.AddComponent<PlayerWallet>();
+        wallet.Initialize(1000);
+        var inventory = player.AddComponent<FishingRodInventory>();
+
+        shopSystem = gameObject.AddComponent<FishingShopSystem>();
+        shopSystem.Setup(character, transform.Find("Art Decorations/Fishing Shop"), wallet, inventory);
+
         var follow = gameCamera.gameObject.GetComponent<CameraFollow2D>();
         if (follow == null) follow = gameCamera.gameObject.AddComponent<CameraFollow2D>();
         follow.Target = player.transform;
@@ -96,9 +105,26 @@ public sealed class FishingGameController : MonoBehaviour
             Initialize();
             if (!initialized) return;
         }
+
+        if (resultTimer > 0f)
+        {
+            resultTimer -= Time.deltaTime;
+            if (resultTimer <= 0f)
+            {
+                resultTimer = 0f;
+                result = "";
+            }
+        }
+
         if (state == State.Explore)
         {
+            if (shopSystem != null && shopSystem.IsOpen) return;
             if (character != null) character.Move();
+            if (shopSystem != null && shopSystem.IsPlayerInRange)
+            {
+                message = "F - 상점 열기";
+                return;
+            }
             bool nearFishingSpot = character != null && Vector2.Distance(character.transform.position, map.FishingSpot) < 1.4f;
             message = nearFishingSpot ? "물가  •  F 키를 눌러 낚시하기" : "이동: WASD 또는 방향키";
             if (nearFishingSpot && Input.GetKeyDown(KeyCode.F)) Cast();
@@ -110,12 +136,13 @@ public sealed class FishingGameController : MonoBehaviour
             if (waitTimer <= 0) Bite();
         }
         else if (state == State.Reeling) Reel();
-        else if (state == State.Result && Input.GetKeyDown(KeyCode.F)) ResetFishing("물가에서 F 키를 눌러 다시 낚시하세요.");
     }
 
     private void Cast()
     {
         state = State.Waiting; character.SetFishing(true);
+        result = "";
+        resultTimer = 0f;
         message = "낚싯줄을 던졌습니다… 입질을 기다리는 중  (ESC: 취소)";
         bobber = CreateRect("Bobber", map.BobberSpot, new Vector2(.22f, .22f), new Color(1f, .28f, .2f), 4);
         waitTimer = Random.Range(2f, 6f);
@@ -151,13 +178,21 @@ public sealed class FishingGameController : MonoBehaviour
 
     private void ResetFishing(string newMessage)
     {
-        if (state == State.Reeling && progress >= 1) result = currentFish == fishTextures[2] ? "노던 파이크" : currentFish == fishTextures[1] ? "잉어" : "대서양 연어";
-        state = State.Result; message = newMessage; character.SetFishing(false);
+        bool caughtFish = state == State.Reeling && progress >= 1f;
+        result = caughtFish
+            ? currentFish == fishTextures[2] ? "노던 파이크" : currentFish == fishTextures[1] ? "잉어" : "대서양 연어"
+            : "";
+        resultTimer = caughtFish ? 3f : 0f;
+        state = State.Explore;
+        message = newMessage;
+        character.SetFishing(false);
         if (bobber != null) Destroy(bobber);
+        bobber = null;
     }
 
     private void OnGUI()
     {
+        if (shopSystem != null && (shopSystem.IsOpen || shopSystem.IsPlayerInRange)) return;
         var style = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = 16, normal = { textColor = Color.white } };
         GUI.Box(new Rect(Screen.width / 2 - 310, 20, 620, 38), ""); GUI.Label(new Rect(Screen.width / 2 - 300, 25, 600, 28), message, style);
         if (state != State.Reeling) { if (!string.IsNullOrEmpty(result)) GUI.Label(new Rect(Screen.width/2-180, 70, 360, 35), "획득: " + result, style); return; }
