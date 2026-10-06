@@ -42,32 +42,61 @@ public sealed class PixelMapBuilder : MonoBehaviour
 
     private void CreateDecorations()
     {
-        if (transform.Find("Art Decorations") != null) return;
-
         var treeTexture = Resources.Load<Texture2D>("Sprites/Environment/Tree1");
         var grassTexture = Resources.Load<Texture2D>("Sprites/Environment/grass1");
+        var shopTexture = Resources.Load<Texture2D>("Sprites/Environment/FishingShop");
         if (treeTexture == null || grassTexture == null) return;
 
         treeTexture.filterMode = FilterMode.Point;
         grassTexture.filterMode = FilterMode.Point;
+        if (shopTexture != null) shopTexture.filterMode = FilterMode.Point;
 
-        var root = new GameObject("Art Decorations");
-        root.transform.SetParent(transform, false);
-
-        Vector2[] treePositions =
+        var root = transform.Find("Art Decorations");
+        if (root == null)
         {
-            new(-5.8f, 5.2f), new(5.9f, 5.5f), new(-8.2f, 1.2f), new(8.3f, 1.5f)
-        };
-        foreach (var position in treePositions)
-            CreateDecoration(root.transform, "Tree", treeTexture, position, 32f, 2, true);
+            var rootObject = new GameObject("Art Decorations");
+            rootObject.transform.SetParent(transform, false);
+            root = rootObject.transform;
 
-        Vector2[] grassPositions =
-        {
-            new(-4.5f, 4.1f), new(-2.8f, 5.6f), new(2.9f, 4.5f), new(4.7f, 6.0f),
-            new(-7.3f, 3.8f), new(7.1f, 3.9f), new(-9.0f, -2.8f), new(9.1f, -3.2f)
-        };
-        foreach (var position in grassPositions)
-            CreateDecoration(root.transform, "Grass", grassTexture, position, 32f, 0, false);
+            Vector2[] treePositions =
+            {
+                new(-5.8f, 5.2f), new(5.9f, 5.5f), new(-8.2f, 1.2f), new(8.3f, 1.5f)
+            };
+            foreach (var position in treePositions)
+                CreateDecoration(root, "Tree", treeTexture, position, 32f, 2, true);
+
+            Vector2[] grassPositions =
+            {
+                new(-4.5f, 4.1f), new(-2.8f, 5.6f), new(2.9f, 4.5f), new(4.7f, 6.0f),
+                new(-7.3f, 3.8f), new(7.1f, 3.9f), new(-9.0f, -2.8f), new(9.1f, -3.2f)
+            };
+            foreach (var position in grassPositions)
+                CreateDecoration(root, "Grass", grassTexture, position, 32f, 0, false);
+        }
+
+        if (shopTexture != null && root.Find("Fishing Shop") == null)
+            CreateFishingShop(root, shopTexture);
+    }
+
+    private static void CreateFishingShop(Transform parent, Texture2D texture)
+    {
+        var shop = new GameObject("Fishing Shop");
+        shop.transform.SetParent(parent, false);
+        shop.transform.position = new Vector2(4.8f, 3.35f);
+
+        var renderer = shop.AddComponent<SpriteRenderer>();
+        renderer.sprite = Sprite.Create(
+            texture,
+            new Rect(0, 0, texture.width, texture.height),
+            new Vector2(.5f, 0f),
+            32f);
+        renderer.sortingOrder = 2;
+
+        // Only the counter/building base blocks movement so the player can walk
+        // naturally in front of the sign and roof.
+        var collider = shop.AddComponent<BoxCollider2D>();
+        collider.size = new Vector2(1.65f, .7f);
+        collider.offset = new Vector2(0f, .35f);
     }
 
     private static void CreateDecoration(
