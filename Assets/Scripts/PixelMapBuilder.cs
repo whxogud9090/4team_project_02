@@ -76,6 +76,30 @@ public sealed class PixelMapBuilder : MonoBehaviour
 
         if (shopTexture != null && root.Find("Fishing Shop") == null)
             CreateFishingShop(root, shopTexture);
+
+        if (root.Find("Fish Market") == null)
+            CreateFishMarket(root);
+    }
+
+    private static void CreateFishMarket(Transform parent)
+    {
+        var market = new GameObject("Fish Market");
+        market.transform.SetParent(parent, false);
+        market.transform.position = new Vector2(-4.8f, 3.35f);
+
+        var texture = new Texture2D(1, 1) { filterMode = FilterMode.Point };
+        texture.SetPixel(0, 0, Color.white);
+        texture.Apply();
+
+        var renderer = market.AddComponent<SpriteRenderer>();
+        renderer.sprite = Sprite.Create(texture, new Rect(0, 0, 1, 1), new Vector2(.5f, 0f), 1f);
+        renderer.color = new Color(.78f, .34f, .18f);
+        renderer.sortingOrder = 2;
+        market.transform.localScale = new Vector3(1.9f, 1.35f, 1f);
+
+        var collider = market.AddComponent<BoxCollider2D>();
+        collider.size = new Vector2(1f, .42f);
+        collider.offset = new Vector2(0f, .21f);
     }
 
     private static void CreateFishingShop(Transform parent, Texture2D texture)

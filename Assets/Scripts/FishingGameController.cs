@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Playable fishing prototype: move, face the water, cast, wait for a bite, then keep the fish inside the reel zone.</summary>
@@ -9,13 +9,14 @@ public sealed class FishingGameController : MonoBehaviour
     private PixelCharacter character;
     private Camera gameCamera;
     private GameObject bobber;
-    private Texture2D[] fishTextures;
-    private Texture2D currentFish;
+    private List<FishDefinition> fishCatalog;
+    private FishDefinition currentFish;
     private float waitTimer;
     private float reelPosition = .4f;
     private float reelVelocity;
     private float fishPosition = .55f;
     private float fishVelocity;
+    private float directionTimer;
     private float progress;
     private float escape;
     private float resultTimer;
@@ -24,6 +25,8 @@ public sealed class FishingGameController : MonoBehaviour
     private bool initialized;
     private PixelMapBuilder map;
     private FishingShopSystem shopSystem;
+    private FishMarketSystem fishMarketSystem;
+    private FishInventory fishInventory;
 
     private void Awake()
     {
@@ -40,12 +43,8 @@ public sealed class FishingGameController : MonoBehaviour
         if (initialized || !Application.isPlaying) return;
         // Clear the temporary Scene-view objects created by the earlier prototype.
         for (int i = transform.childCount - 1; i >= 0; i--) Destroy(transform.GetChild(i).gameObject);
+        fishCatalog = FishCatalog.CreateDefault();
         BuildWorld();
-        fishTextures = new[] {
-            Resources.Load<Texture2D>("Sprites/Fish/atlantic_salmon"),
-            Resources.Load<Texture2D>("Sprites/Fish/common_carp"),
-            Resources.Load<Texture2D>("Sprites/Fish/northern_pike")
-        };
         initialized = true;
     }
 
@@ -76,9 +75,12 @@ public sealed class FishingGameController : MonoBehaviour
         var wallet = player.AddComponent<PlayerWallet>();
         wallet.Initialize(1000);
         var inventory = player.AddComponent<FishingRodInventory>();
+        fishInventory = player.AddComponent<FishInventory>();
 
         shopSystem = gameObject.AddComponent<FishingShopSystem>();
         shopSystem.Setup(character, transform.Find("Art Decorations/Fishing Shop"), wallet, inventory);
+        fishMarketSystem = gameObject.AddComponent<FishMarketSystem>();
+        fishMarketSystem.Setup(character, transform.Find("Art Decorations/Fish Market"), wallet, fishInventory, fishCatalog);
 
         var follow = gameCamera.gameObject.GetComponent<CameraFollow2D>();
         if (follow == null) follow = gameCamera.gameObject.AddComponent<CameraFollow2D>();
@@ -118,11 +120,16 @@ public sealed class FishingGameController : MonoBehaviour
 
         if (state == State.Explore)
         {
-            if (shopSystem != null && shopSystem.IsOpen) return;
+            if ((shopSystem != null && shopSystem.IsOpen) || (fishMarketSystem != null && fishMarketSystem.IsOpen)) return;
             if (character != null) character.Move();
             if (shopSystem != null && shopSystem.IsPlayerInRange)
             {
                 message = "F - 상점 열기";
+                return;
+            }
+            if (fishMarketSystem != null && fishMarketSystem.IsPlayerInRange)
+            {
+                message = "F - 물고기 판매";
                 return;
             }
             bool nearFishingSpot = character != null && Vector2.Distance(character.transform.position, map.FishingSpot) < 1.4f;
@@ -150,8 +157,14 @@ public sealed class FishingGameController : MonoBehaviour
 
     private void Bite()
     {
-        state = State.Reeling; currentFish = fishTextures[Random.Range(0, fishTextures.Length)];
+        if (fishCatalog == null || fishCatalog.Count == 0)
+        {
+            ResetFishing("물고기 정보를 불러오지 못했습니다.");
+            return;
+        }
+        state = State.Reeling; currentFish = fishCatalog[Random.Range(0, fishCatalog.Count)];
         fishPosition = Random.Range(.15f, .85f); reelPosition = .4f; reelVelocity = 0; fishVelocity = Random.Range(-.15f, .15f);
+        directionTimer = Random.Range(currentFish.DirectionChangeInterval * .65f, currentFish.DirectionChangeInterval * 1.35f);
         progress = escape = 0; message = "입질! 마우스 왼쪽 또는 스페이스를 눌러 흰 영역을 움직이세요.";
         if (bobber != null) bobber.GetComponent<SpriteRenderer>().color = Color.yellow;
     }
@@ -162,15 +175,21 @@ public sealed class FishingGameController : MonoBehaviour
         reelVelocity += input * 1.35f * Time.deltaTime;
         reelVelocity *= Mathf.Exp(-4f * Time.deltaTime);
         reelPosition = Mathf.Clamp01(reelPosition + reelVelocity * Time.deltaTime);
-        fishVelocity += Mathf.Sin(Time.time * 3.1f) * .22f * Time.deltaTime;
-        fishVelocity = Mathf.Clamp(fishVelocity, -.38f, .38f);
+        fishVelocity += Mathf.Sin(Time.time * 3.1f) * currentFish.MovementAcceleration * Time.deltaTime;
+        directionTimer -= Time.deltaTime;
+        if (directionTimer <= 0f)
+        {
+            fishVelocity += Random.Range(-currentFish.DirectionImpulse, currentFish.DirectionImpulse);
+            directionTimer = Random.Range(currentFish.DirectionChangeInterval * .65f, currentFish.DirectionChangeInterval * 1.35f);
+        }
+        fishVelocity = Mathf.Clamp(fishVelocity, -currentFish.MaxSpeed, currentFish.MaxSpeed);
         fishPosition += fishVelocity * Time.deltaTime;
         if (fishPosition < .02f || fishPosition > .98f) fishVelocity *= -1f;
         fishPosition = Mathf.Clamp(fishPosition, .02f, .98f);
-        float zoneSize = currentFish == fishTextures[2] ? .15f : currentFish == fishTextures[1] ? .20f : .26f;
+        float zoneSize = currentFish.ReelZoneSize;
         bool aligned = fishPosition >= reelPosition && fishPosition <= reelPosition + zoneSize;
-        progress = Mathf.Clamp01(progress + (aligned ? .27f : -.12f) * Time.deltaTime);
-        escape = Mathf.Clamp01(escape + (aligned ? -.14f : .18f) * Time.deltaTime);
+        progress = Mathf.Clamp01(progress + (aligned ? currentFish.CatchRate : -.12f) * Time.deltaTime);
+        escape = Mathf.Clamp01(escape + (aligned ? -.14f : currentFish.EscapeRate) * Time.deltaTime);
         if (progress >= 1) ResetFishing("물고기를 잡았습니다! F 키로 다시 낚시할 수 있습니다.");
         else if (escape >= 1) ResetFishing("물고기가 도망갔습니다. F 키로 다시 시도하세요.");
         else if (Input.GetKeyDown(KeyCode.Escape)) ResetFishing("낚시를 취소했습니다.");
@@ -179,9 +198,8 @@ public sealed class FishingGameController : MonoBehaviour
     private void ResetFishing(string newMessage)
     {
         bool caughtFish = state == State.Reeling && progress >= 1f;
-        result = caughtFish
-            ? currentFish == fishTextures[2] ? "노던 파이크" : currentFish == fishTextures[1] ? "잉어" : "대서양 연어"
-            : "";
+        result = caughtFish && currentFish != null ? currentFish.DisplayName : "";
+        if (caughtFish && currentFish != null && fishInventory != null) fishInventory.Add(currentFish.Id);
         resultTimer = caughtFish ? 3f : 0f;
         state = State.Explore;
         message = newMessage;
@@ -192,16 +210,17 @@ public sealed class FishingGameController : MonoBehaviour
 
     private void OnGUI()
     {
-        if (shopSystem != null && (shopSystem.IsOpen || shopSystem.IsPlayerInRange)) return;
+        if ((shopSystem != null && (shopSystem.IsOpen || shopSystem.IsPlayerInRange)) ||
+            (fishMarketSystem != null && (fishMarketSystem.IsOpen || fishMarketSystem.IsPlayerInRange))) return;
         var style = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = 16, normal = { textColor = Color.white } };
         GUI.Box(new Rect(Screen.width / 2 - 310, 20, 620, 38), ""); GUI.Label(new Rect(Screen.width / 2 - 300, 25, 600, 28), message, style);
         if (state != State.Reeling) { if (!string.IsNullOrEmpty(result)) GUI.Label(new Rect(Screen.width/2-180, 70, 360, 35), "획득: " + result, style); return; }
         var track = new Rect(Screen.width / 2 - 350, Screen.height - 150, 700, 38);
         GUI.Box(track, "");
-        float zoneSize = currentFish == fishTextures[2] ? .15f : currentFish == fishTextures[1] ? .20f : .26f;
+        float zoneSize = currentFish != null ? currentFish.ReelZoneSize : .2f;
         GUI.color = Color.white; GUI.Box(new Rect(track.x + reelPosition * track.width, track.y + 3, zoneSize * track.width, track.height - 6), "");
         GUI.color = Color.white;
-        if (currentFish != null) GUI.DrawTexture(new Rect(track.x + fishPosition * track.width - 16, track.y - 10, 32, 32), currentFish, ScaleMode.ScaleToFit, true);
+        if (currentFish?.Icon != null) GUI.DrawTexture(new Rect(track.x + fishPosition * track.width - 16, track.y - 10, 32, 32), currentFish.Icon, ScaleMode.ScaleToFit, true);
         GUI.Box(new Rect(track.x, track.y + 55, track.width * progress, 16), ""); GUI.Label(new Rect(track.x, track.y + 75, 200, 24), "포획 " + Mathf.RoundToInt(progress * 100) + "%");
         GUI.Box(new Rect(track.x + track.width - track.width * escape, track.y + 55, track.width * escape, 16), ""); GUI.Label(new Rect(track.x + 500, track.y + 75, 200, 24), "도주 " + Mathf.RoundToInt(escape * 100) + "%", style);
     }
